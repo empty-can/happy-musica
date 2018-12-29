@@ -1,0 +1,100 @@
+.horizontal_scroll_wrap{
+    background: #f1f1f1;
+    overflow-y: hidden;
+    margin: 0 -10px;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.scroll_lst {
+    height: 80%;
+    background: white;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    padding: 0.2em;
+    -webkit-overflow-scrolling: touch;
+}
+
+.tweet {
+	background-color: white;
+	border: solid 1px lightgray;
+    height: 8%;
+	padding: 0.5em;
+	margin-bottom: 0.5em;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.jump {
+    height: 8%;
+	font-size: x-large;
+	text-align: right;
+}
+
+.scroll_item {
+    margin-right: 10px;
+    display: inline-block;
+    border: 1px solid #ddd;
+    background: #fff;
+}
+.scroll_item:first-child {
+    margin-left: 10px;
+}
+
+.scroll_item_inr {
+    display: block;
+}
+.scroll_item_info {
+    white-space: normal;
+    padding: 8px;
+}
+.scroll_item_ttl {
+    font-size: 12px;
+    color: #484848;
+    line-height: 1.4;
+    margin-bottom: 0;
+}
+
+.scroll_item_thum {
+	height: 100%;
+}
+
+.tweet .profile .name {
+	padding-left: 1em;
+	font-weight: bold;
+	font-size: small;
+}
+
+.tweet .profile .screen_name {
+	padding-left: 1em;
+	color: gray;
+	font-size: small;
+}
+
+.tweet .icon {
+	max-width: 10%;
+	float:left;
+}
+
+.tweet .profile {
+	max-width: 20%;
+	float:left;
+}
+
+.tweet .text {
+	width: 60%;
+	padding-left: 1em;
+	font-size: large;
+	float:left;
+}
+
+img {
+	width: auto;
+	height: 100%;
+}
+
+body {
+	width: 98%;
+	margin-left: auto;
+	margin-right: auto;
+}

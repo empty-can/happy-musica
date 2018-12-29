@@ -1,0 +1,30 @@
+#bottom_menu {
+	width: 90vw;
+	margin: 0 5vw 0 5vw;
+}
+
+.tweet_media {
+    max-width: 1024px;
+}
+
+.media_box{
+    max-width: calc(1024px - 2vw);
+}
+
+.imgs_wrapper {
+    max-width: calc(1024px - 4vw);
+}
+
+.img_wrapper {
+	max-width: calc(1024px - 6vw);
+
+	margin: 0 0 0 0.5vh;
+}
+
+.img_wrapper img {
+	max-width: calc(1024px - 6vw);
+}
+
+.info{
+	width: 1024px;
+}

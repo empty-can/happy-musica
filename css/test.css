@@ -1,0 +1,42 @@
+body {
+	background-color:gray;
+}
+
+.parent {
+	background-color:lightgray;
+	overflow: scroll;
+	white-space: nowrap;
+	max-height:80%;
+	margin: 5px;
+}
+
+.child {
+	padding: 10px;
+	max-height:100%;
+}
+
+.img {
+	margin-top: 0px;
+	margin-left: auto;
+	margin-right: auto;
+	display:inline-block;
+	vertical-align:top;
+	max-height:100%;
+}
+
+.media {
+	height:95%;
+	display:block;
+	margin-top:auto;
+	margin-left:auto;
+	margin-right:auto;
+	margin-bottom:auto;
+}
+
+.tweet {
+	background-color:white;
+	position:relative;
+	bottom:50px;
+	left:50px;
+	z-index: 2;
+}

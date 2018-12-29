@@ -1,0 +1,247 @@
+#base {
+	visibility: hidden;
+	display: none;
+}
+
+#tweet_button {
+	display: none;
+}
+
+div {
+	// border: solid 1px blue;
+}
+
+.parent {
+	padding-bottom: 5vh;
+}
+
+.tweet_frame {
+	position: relative;
+}
+
+#media {
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: black;
+	background: rgba(45,45,45, 0.5);
+	width: 100%;
+	// height: 86%;
+	height: 85vh;
+	overflow: auto;
+	padding-bottom: 15vh;
+	visibility: hidden;
+	z-index: 0;
+}
+
+/*
+img {
+	display: inline-block;
+	max-width: 95%;
+	max-height: 75vh;
+	width: auto;
+	margin-top: 2vh;
+	margin-left: auto;
+	margin-right: auto;
+	//visibility: hidden;
+}
+*/
+
+#media img {
+	display: block;
+	max-width: 95%;
+	max-height: 75vh;
+	width: auto;
+	margin-top: 2vh;
+	margin-left: auto;
+	margin-right: auto;
+	//visibility: hidden;
+}
+
+#media .close {
+	// position: fixed;
+	// text-align: center;
+	// font-size: 3vh;
+	// width: 5vw;
+	// height: 5vh;
+	// bottom: 5vh;
+	// right: 5vw;
+	// background-color: orange;
+	// border: solid 5px black;
+	// z-index: 50;
+}
+
+.album_button {
+	 position: relative;
+	 width: 100%;
+	 //height: 40%;
+	 //right: 0;
+	 //bottom: 0;
+}
+
+.tweet_frame .button {
+	display: block;
+	font-size: 1.5em;
+	text-align: center;
+	vertical-align:middle;
+	width: 90%;
+	margin-right: auto;
+	margin-left: auto;
+	text-decoration: none;
+	background: gold; /*ボタン色*/
+	color: black;
+	border-bottom: solid 4px darkorange;
+	border-radius: 3px;
+}
+
+.own {
+	border-color: lightyellow;
+}
+
+.rt {
+	border-color: gray;
+}
+
+.twitter-tweet {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#bottom_menu {
+	position: fixed;
+	width: 100%;
+	height: 13vh;
+	background-color: skyblue;
+	padding: 0.25em;
+	text-align:right;
+	right: 0;
+	bottom: 0;
+	// opacity: 0.5;
+	z-index: 100;
+}
+
+#bottom_menu button {
+	display: inline-block;
+}
+
+#bottom_menu .button {
+	display: inline-block;
+	font-size: 7vh;
+	text-align: center;
+	width: 10vh;
+	height: 10vh;
+	margin-top: 1vh;
+	text-decoration: none;
+	background: royalblue; /*ボタン色*/
+	color: white;
+	border-bottom: solid 4px darkblue;
+	border-radius: 3px;
+}
+
+.button:active { /*ボタンを押したとき*/
+	-ms-transform: translateY(4px);
+	-webkit-transform: translateY(4px);
+	transform: translateY(4px); /*下に動く*/
+	border-bottom: none; /*線を消す*/
+}
+
+.disabled_button {
+	display: inline-block;
+	font-size: 7vh;
+	text-align: center;
+	width: 10vh;
+	height: 10vh;
+	margin-top: 1vh;
+	text-decoration: none;
+	background: darkgray; /*ボタン色*/
+	color: black;
+	border-bottom: solid 4px gray;
+	border-radius: 3px;
+}
+
+.button img{
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+.disabled_button img{
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+.top {
+	font-size:x-large;
+	width:20%;
+	position: fixed;
+	left: 75%;
+	margin-right: auto;
+	margin-left: auto;
+	text-align:right;
+	top:0px;
+}
+
+h1 {
+	width: 100%;
+    font-size: large;
+	text-align: center;
+}
+
+body{
+	width: 100%;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-right: auto;
+	margin-left: auto;
+	z-index: 10;
+}
+
+#timeline {
+    width: 100%;
+    min-width: 230px;
+    // border: solid 1px black;
+	margin-right: auto;
+	margin-left: auto;
+	margin-bottom: 20vw;
+}
+
+.tweet {
+    width: 95vw;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0px;
+}
+
+.raw_tweet {
+    width: 85vw;
+    min-width: 230px;
+    max-width: 500px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.tweet_media {
+	// display: inline-flex;
+    display: none;
+	align-items: flex-start;
+	background: black;
+	width: 95vw;
+	height:auto;
+	//padding: 0 5% 0 5%;
+	margin: 1vh auto 1vh auto;
+	overflow: auto;
+}
+
+.tweet_media img {
+	background-color: #DDD;
+	border: solid 5px black;
+	margin : 0 auto 0 auto;
+	padding: 1vh;
+	width: auto;
+	height: auto;
+	max-width: 98%;
+	max-height: 75vh;
+}

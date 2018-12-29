@@ -1,0 +1,388 @@
+/*****************************************
+   根本要素
+******************************************/
+#base {
+	visibility: hidden;
+	display: none;
+}
+
+#wrapper {
+	background-color: black;
+	color: white;
+
+	padding-top: 10vh;
+	width: 100vw;
+	height: 100vh;
+	overflow: auto;
+}
+
+#timeline {
+    width: 100%;
+    min-width: 250px;
+}
+
+#dummy {
+    width: 100%;
+	height: 20vh;
+}
+
+#bottom {
+    width: 100%;
+	height: 0vh;
+	margin-top: -10vh;
+}
+
+video {
+    width: 100%;
+    max-height: 100%;
+}
+/*****************************************
+   ツイート
+******************************************/
+.tweet {
+    width: var(--wrapper_width);
+	height: 100%;
+	margin: 0 2vw 0 2vw;
+}
+
+.owntweet {}
+.retweet {}
+
+/*****************************************
+   詳細情報
+******************************************/
+
+.info_wrapper{
+    width: 96vw;
+	max-height: 10vh;
+
+	text-align: left;
+	margin: 2px 0 2vh 0;
+}
+
+.info{
+	width: 1024px;
+	max-width: 96vw;
+
+	font-size: small;
+	color: black;
+
+	display: flex;
+
+	margin: 0 auto 0 auto;
+}
+
+.info .tweet_body {
+	color: white;
+
+	width: calc(100% - 56px);
+	max-height: calc(56px + 1vh);
+	margin-left: 8px;
+}
+
+.info .tweet_body .message {
+	white-space: nowrap;
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+
+.info .tweet_body .user_info {
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.tweet_info {
+	margin-bottom: 2vh;
+}
+
+.message a { color: white; }
+.message a:link { color: white; }
+.message a:visited { color: white; }
+.message a:hover { color: white; }
+.message a:active { color: white; }
+
+.info .user {
+	width: 56px;
+	overflow: hidden;
+}
+
+.info .user img {
+	border-radius: 50%;
+	width: 48px;
+	height: 48px;
+}
+
+.info .tweet_body .user_info a {
+	color: lightgray;
+}
+
+/*****************************************
+   画像
+******************************************/
+
+.tweet_media {
+    width: 96vw;
+    max-width: 1024px;
+	max-height: 85vh;
+
+	margin: 0 auto;
+}
+
+.media_box{
+	display: flex;
+	align-items: baseline;
+
+    max-width: 94vw;
+	max-height: 83vh;
+
+	margin: 1vh 1vw auto auto;
+}
+
+.imgs_wrapper {
+	display: flex;
+	/*
+	flex-direction: row-reverse;
+	*/
+	direction: rtl;
+
+	max-width: 92vw;
+	max-height: 83vh;
+
+	overflow: auto;
+
+	margin: 0 auto auto auto;
+}
+
+.img_wrapper {
+	display: block;
+
+	width: auto;
+	height: auto;
+	max-width: 90vw;
+	max-height: 70vh;
+
+	margin: 0 0 0 0.5vh;
+}
+
+.img_wrapper img {
+	display: block;
+
+	/*border: solid #DDD 1.5vh; */
+	border-style: solid;
+	border-width: 1.5vh;
+
+	width: auto;
+	height: auto;
+	max-width: 90vw;
+	max-height: 70vh;
+}
+
+.own {
+	border-color: lightyellow;
+}
+
+.rt {
+	border-color: gray;
+}
+
+/*****************************************
+   ポップアップ
+******************************************/
+
+#popup {
+	display: none;
+	background-color: black;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 0;
+	padding: 1vh 1vw 15vh 1vw;
+	overflow: auto;
+	margin-bottom: 100vh;
+	-webkit-overflow-scrolling: touch;
+}
+
+#popup img {
+	display: block;
+	width: auto;
+	max-width: 98vw;
+	margin: 0 auto 2vh auto;
+	height: auto;
+}
+
+#closePopup {
+	display: none;
+	background-color: lightskyblue;
+	border-top: solid 1vh lightgray;
+	border-bottom: solid 1vh black;
+	border-right: solid 1vh gray;
+	border-left: solid 1vh gray;
+	border-radius: 1vw;
+	font-size: 5vh;
+	color: black;
+	position: fixed;
+	bottom: 0vh;
+
+	width: 80vw;
+	margin: 2vh 10vw 1vh 10vw;
+	height: 8vh;
+	align-items: center;
+	justify-content: center;
+	z-index: 0;
+}
+
+#closePopup:active { /*ボタンを押したとき*/
+	transform: translateY(4px); /*下に動く*/
+	border-bottom: solid 1vh lightgray; /*線を消す*/
+	border-top: solid 1vh black;
+}
+
+/*****************************************
+   メニュー
+******************************************/
+
+#bottom_menu {
+	position: fixed;
+	width: 100%;
+	height: 8vh;
+	background-color: skyblue;
+	padding: 0.25em;
+	text-align:right;
+	right: 0;
+	top: 0;
+	z-index: 100;
+}
+
+#profile_image {
+	color: white;
+	text-align: center;
+
+	white-space: nowrap;
+
+	overflow: auto;
+}
+
+#profile_image img{
+	border-radius: 50%;
+}
+
+#navigation_menu {
+	width: 100%;
+	background-color: black;
+	height: 8vh;
+}
+
+#menu_wrapper {
+	padding: 0.25em;
+	max-width: 40vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 3vh auto 0 auto;
+}
+
+#menu_wrapper .button {
+	font-size: 4vh;
+	text-align: center;
+	width: 7vh;
+	height: 7vh;
+	background: white; /*ボタン色*/
+	color: white;
+	border-bottom: solid 4px darkblue;
+	border-radius: 3px;
+}
+
+#bottom_menu button {
+	display: inline-block;
+}
+
+#bottom_menu .button {
+	display: inline-block;
+	font-size: 4vh;
+	text-align: center;
+	width: 7vh;
+	height: 7vh;
+	margin: 0;
+	text-decoration: none;
+	background: royalblue; /*ボタン色*/
+	color: white;
+	border-bottom: solid 4px darkblue;
+	border-radius: 3px;
+}
+
+.button:active { /*ボタンを押したとき*/
+	-ms-transform: translateY(4px);
+	-webkit-transform: translateY(4px);
+	transform: translateY(4px); /*下に動く*/
+	border-bottom: none; /*線を消す*/
+}
+
+.disabled_button {
+	display: inline-block;
+	font-size: 7vh;
+	text-align: center;
+	width: 10vh;
+	height: 10vh;
+	margin-top: 1vh;
+	text-decoration: none;
+	background: darkgray; /*ボタン色*/
+	color: black;
+	border-bottom: solid 4px gray;
+	border-radius: 3px;
+}
+
+.button img{
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+.disabled_button img{
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+.top {
+	font-size:x-large;
+	width:20%;
+	position: fixed;
+	left: 75%;
+	margin-right: auto;
+	margin-left: auto;
+	text-align:right;
+	top:0px;
+}
+
+h1 {
+	width: 100%;
+    font-size: large;
+	text-align: center;
+}
+
+body{
+	background-color: black;
+	width: 100%;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-right: auto;
+	margin-left: auto;
+	z-index: 10;
+}
+
+.raw_tweet {
+	display: none;
+    width: 85vw;
+    min-width: 230px;
+    max-width: 500px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#tweet_button {
+	display: none;
+}
