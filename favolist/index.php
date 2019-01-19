@@ -31,13 +31,13 @@ if(!empty($name)) {
 $screen_name = getSessionParam('screen_name', "orenoyome");
 $screen_name = getGetParam('screen_name', $screen_name);
 
-$param = array(
+$params = array(
     "screen_name" => $screen_name,
     "count" => $maxCount
 );
-setSessionParam('param', $param);
+setSessionParam('params', $params);
 
-$tweetList = new TweetList(PublicUserToken, PublicUserTokenSecret, $api, $param, $max_id, $count, 5);
+$tweetList = new TweetList(PublicUserToken, PublicUserTokenSecret, $api, $params, $max_id, $count, 5);
 
 
 $targetTweets = $tweetList->getTweet4View();
@@ -63,7 +63,11 @@ if($end == 0 || ($end==$max_id)){
 $id_hisoty[$screen_name . ':' . $end] = $start;
 setSessionParam('id_hisoty', $id_hisoty);
 
-$user = getTweetObjects(PublicUserToken, PublicUserTokenSecret, "users/show", $param);
+$params = array(
+    "screen_name" => $screen_name
+);
+
+$user = getTweetObjects(PublicUserToken, PublicUserTokenSecret, "users/show", $params);
 $profile_image_url_https = $user->profile_image_url_https;
 $user_name = $user->name;
 

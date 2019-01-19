@@ -6,7 +6,7 @@ include './lib/parts/header.php';
 function generateTR ($id, $img, $name, $screenName, $comic="") {
     echo '<tr>';
     echo '<td style="text-align:right;width:56px;"><img class="icon" src="https://pbs.twimg.com/profile_images/'.$id.'/'.$img.'" alt="" /></td>';
-    echo '<td style="text-align:left;white-space:nowrap;">　<a href="/osaisen/timeline/?name='.$name.'&screen_name='.$screenName.'&count=50" target="_blank">'.$name.'</a></td>';
+    echo '<td style="text-align:left;white-space:nowrap;">　<a href="/osaisen/timeline/?name='.$name.'&screen_name='.$screenName.'&count=50" target="_self">'.$name.'</a></td>';
     if(!empty($comic))
         echo '<td style="text-align:left;white-space:nowrap;"><span style="font-size:0.75em;">『'.$comic.'』</span></td>';
         echo '</tr>';
@@ -15,25 +15,25 @@ function generateTR ($id, $img, $name, $screenName, $comic="") {
 $loginCookieId = getCookieParam("login_cookie_id");
 
 if(!empty($loginCookieId)) {
-  $isLogined = isLoginedTamikusa($loginCookieId);
+    $isLogined = isLoginedTamikusa($loginCookieId);
 
-  if($isLogined===true) {
-    $account = getLoginedTamikusaAccount($loginCookieId);
-    setSessionParam('logined', true);
-    
-    if(empty(getSessionParam('user_info',''))) {
-      $tamikusaInfo = getTamikusa($account);
+    if($isLogined===true) {
+        $account = getLoginedTamikusaAccount($loginCookieId);
+        setSessionParam('logined', true);
 
-      $access_token = $tamikusaInfo[2];
-      $access_token_secret = $tamikusaInfo[3];
-      $user_connection = new TwitterOAuth(Consumer_Key, Consumer_Secret, $access_token, $access_token_secret);
-      $userInfo = $user_connection->get('account/verify_credentials');
-      
-      setSessionParam('user_info', $userInfo);
-      setSessionParam('access_token', $access_token);
-      setSessionParam('access_token_secret', $access_token_secret);
+        if(empty(getSessionParam('user_info',''))) {
+            $tamikusaInfo = getTamikusa($account);
+
+            $access_token = $tamikusaInfo[2];
+            $access_token_secret = $tamikusaInfo[3];
+            $user_connection = new TwitterOAuth(Consumer_Key, Consumer_Secret, $access_token, $access_token_secret);
+            $userInfo = $user_connection->get('account/verify_credentials');
+
+            setSessionParam('user_info', $userInfo);
+            setSessionParam('access_token', $access_token);
+            setSessionParam('access_token_secret', $access_token_secret);
+        }
     }
-  }
 }
 
 $userInfo = getSessionParam('user_info');
@@ -180,14 +180,12 @@ table {
 <body>
 	<div id="main">
 		<h1>二次絵絶対拡散するサイト</h1>
+		<p><a href="./auth/logout.php" target="_self">ログアウト</a></p>
+		<br>
 		<div class="img">
 			<img alt="アイコン" src="./imgs/1Ml7URFU_400x400.jpg">
 		</div>
 		<br>
-		<p>
-			<a href="/osaisen/timeline/?screen_name=orenoyome&count=50" class="square_btn">公式タイムラインへ</a>
-		</p>
-		<br/>
 <?php
 printErrorMessages("color:red;font-weight:bold;");
 
@@ -199,8 +197,14 @@ printErrorMessages("color:red;font-weight:bold;");
             ようこそ「<?php echo $userInfo->{'name'}."（".$userInfo->{'screen_name'}."）"; ?>」=サン。<br>
 			<br>
 		<p>
-			<a href="/osaisen/home/?count=50" target="_blank" class="home_btn">ホームタイムライン</a>
+			<a href="/osaisen/home/?count=50" target="_self" class="home_btn">ホームタイムライン</a>
+		<p>
+			<br/>
 		</p>
+			<a href="/osaisen/favolist/?screen_name=<?php echo $userInfo->{'screen_name'}; ?>&count=50" target="_self" class="home_btn">あなたの　いいね♥</a>
+		</p>
+			<br/>
+			<h3 id="your_list">■Twitter検索</h3>
 		<div style="margin:1em;display:flex; justify-content:center; align-items:center;">
 			<form id="search" action="/osaisen/search/" method="get"
 				style="display: block;">
@@ -210,23 +214,95 @@ printErrorMessages("color:red;font-weight:bold;");
 				<button type="submit" onclick="if(document.getElementById('searchText').value!=''){document.getElementById('searchText').value='#'+document.getElementById('searchText').value;document.getElementById('search').submit()";>＃</button>
 			</form>
 		</div>
-			■あなたのリスト<br />
+			<h3 id="your_list">■あなたのリスト</h3>
 			<?php
 			$param = array(
 				"screen_name" => $userInfo->{'screen_name'}
 			);
 
 			$lists = getTweetObjects($accessToken, $accessTokenSecret, "lists/list", $param);
-			
+
 			if(isset($lists->{'errors'})) {
 				echo 'APIの上限を超えたようです。少々お待ちください。';
 			} else {
-				foreach ($lists as $list) {
-					// var_dump($list);
-					echo '●<a href="/osaisen/list/?list_id='.$list->id.'&name='.$list->name.'&count=50" target="_blank">'.$list->name.'</a><br/>';
+				$sort = array();
+				$sortedList = json_decode(json_encode($lists), true);
+			   //  var_dump($sortedList);
+			    foreach ($sortedList as $key => $value) {
+			    	//print_r($key);
+			    	//var_dump($value);
+			        $sort[$key] = $value['name'];
+			    }
+
+			    array_multisort($sort, SORT_ASC, $sortedList);
+
+			    //print_r($lists);
+
+				$myList = array();
+
+				echo '<table style="margin:auto;text-align:left;white-space:nowrap;width:100px;">';
+
+				foreach ($sortedList as $list) {
+				    $myList[] = [$list['id'] => $list['name']];
+					echo '<tr><td><a href="/osaisen/list/?list_id='.$list['id'].'&name='.$list['name'].'&count=50" target="_self">↗️'.$list['name'].'</a></td>'.
+									'<td><a href="/osaisen/list/edit.php?id='.$list['id'].'&title='.$list['name'].'" target="_self">&#x1F4DD;</a></td>'.
+					               '<td>（&#x1F465;：'.$list['member_count'].'）</td></tr>';
 				}
+				//print_r($array);
+
+				echo '</table>';
+
+				setSessionParam('myList', $myList);
+
+				if(strcmp($userInfo->{'screen_name'}, 'osaisen_info')==0)
+				    file_put_contents ('/xampp/htdocs/osaisen/tmp/publicList.json', json_encode($myList));
+			}
+			
+
+			$collections = getTweetObjects($accessToken, $accessTokenSecret, 'collections/list', $param);
+			$myCollections[] = array();
+
+			//var_dump($collections->objects->timelines);
+			//var_dump($collections->response->results);
+			//var_dump($collections);
+
+			if (isset($collections->{'errors'})) {
+			    echo 'APIの上限を超えたようです。少々お待ちください。';
+			} else if(isset($collections->response->results) && empty($collections->response->results)) {
+			    echo '';
+			} else if(!is_string($collections)) {
+			    foreach ($collections->objects->timelines as $key => $value) {
+			        $tmp = [$key => $value];
+
+			        $myCollections[] = $tmp;
+			    }
 			}
 ?>
+		<br/>
+		<a href="/osaisen/list/create.php">&#x2795;リストを追加</a>
+		<hr/>
+		
+	<h3>現在のコレクション</h3>
+	<table style="margin:auto;text-align:left;white-space:nowrap;width:100px;">
+	<?php
+		foreach($myCollections as $collections) {
+			foreach(array_values($collections) as $collection) {
+				$tkn = explode('/', $collection->custom_timeline_url);
+				
+				$collectionId = $tkn[count($tkn)-1];
+				?>
+				<tr><td>↗️<a href="/osaisen/collections/?collection_id=<?php echo	 $collectionId;?>&collection_name=<?php echo $collection->name;?>"><?php echo $collection->name?></a>
+				　<a href="<?php echo $collection->custom_timeline_url; ?>" target="_blank">↗️Twitterページ</a>
+				　<a href="/osaisen/collections/add.php?collection_id=<?php echo $collectionId;?>&collection_name=<?php echo $collection->name;?>">&#x2795;ツイートを追加</a></td></tr>
+				<!-- tr><td>↗️<a href="<?php echo $collection->custom_timeline_url; ?>" target="_blank"><?php echo $collection->name?></a>
+				　<a href="/osaisen/collections/add.php?collection_id=<?php echo $collectionId;?>&collection_name=<?php echo $collection->name;?>">&#x2795;ツイートを追加</a></td></tr -->
+				<?php
+			}
+		}
+	?>
+	</table>
+		<br/>
+		<a href="/osaisen/collections/create.php">&#x2795;コレクションを追加</a>
 		<hr/>
 		<br/>
 <?php
@@ -245,13 +321,82 @@ printErrorMessages("color:red;font-weight:bold;");
     }
     ?>
     	<div id="cont">
-			<b id="timeline">おススメ タイムライン</b>
+			<b id="timeline">公式おススメリスト</b><br/>
+			<?php
+			$pulicList = json_decode(file_get_contents('/xampp/htdocs/osaisen/tmp/publicList.json'));
+
+			if(!empty($pulicList)) {
+
+				echo '<table style="margin:auto;text-align:left;white-space:nowrap;width:100px;">';
+
+				foreach ($pulicList as $tmp) {
+					foreach ($tmp as $key => $value) {
+					    echo '<tr><td><a href="/osaisen/list/?list_id='.$key.'&name='.$value.'&count=50" target="_self">'.$value.'</a>系</td></tr>';
+					}
+				}
+
+				echo '</table>';
+			}
+?>
+			<!--b id="timeline">おススメ タイムライン</b>
+
+			<?php
+			/**
+			$param = array(
+				"screen_name" => 'osaisen_info'
+			);
+
+			$lists = getTweetObjects(PublicUserToken, PublicUserTokenSecret, "lists/list", $param);
+
+			if(isset($lists->{'errors'})) {
+				echo 'APIの上限を超えたようです。少々お待ちください。';
+			} else {
+				$sort = array();
+				$sortedList = json_decode(json_encode($lists), true);
+			   //  var_dump($sortedList);
+			    foreach ($sortedList as $key => $value) {
+			    	//print_r($key);
+			    	//var_dump($value);
+			        $sort[$key] = $value['name'];
+			    }
+
+			    array_multisort($sort, SORT_ASC, $sortedList);
+
+			    $publicListMembers = array();
+
+			    foreach ($sortedList as $list) {
+
+			        $param = array(
+			            "list_id" => $list['id']
+			        );
+
+			        $tmp = getTweetObjects(PublicUserToken, PublicUserTokenSecret, "lists/members", $param);
+
+			        echo $list['name'];
+			        var_dump($tmp);
+			    }
+
+			    print_r($publicListMembers);
+
+// 				$myList = array();
+
+// 				echo '<table style="margin:auto;text-align:left;white-space:nowrap;width:100px;">';
+
+// 				foreach ($sortedList as $list) {
+// 				    $myList[] = [$list['id'] => $list['name']];
+// 					echo '<tr><td><a href="/osaisen/list/?list_id='.$list['id'].'&name='.$list['name'].'&count=50" target="_self">'.$list['name'].'</a></td>'.
+// 									'<td><a href="/osaisen/list/edit.php?id='.$list['id'].'&title='.$list['name'].'" target="_self">&#x1F4DD;</a></td>'.
+// 					               '<td>（&#x1F465;：'.$list['member_count'].'）</td></tr>';
+// 				}
+				//print_r($array);
+
+				echo '</table>';
+			}
+			**/
+?>
     		<ul class="menu">
-    			<li><a href="/osaisen/search/?search=おもしろ動画" target="_blank">おもしろ動画</a></li>
-    			<li><a href="http://www.yaruox.jp/osaisen/search/?search=世界の絶景" target="_blank">世界の絶景</a></li>
-    			<!-- li><a href="./mock.php" target="_blank"><span style="color: red;">NEW！</span>本番ページに向けてのモック画面！</a></li -->
-    			<!-- li><a href="./hometimeline.php" target="_blank">マイタイムライン</a></li -->
-    			<!-- li><a href="./2d/2Droom.php" target="_blank">二次絵絶対拡散するルーム</a></li -->
+    			<li><a href="/osaisen/search/?search=おもしろ動画" target="_self">おもしろ動画</a></li>
+    			<li><a href="http://www.yaruox.jp/osaisen/search/?search=世界の絶景" target="_self">世界の絶景</a></li>
     		</ul>
 			<br>
 			<b id="mangaka">おススメ 漫画家アカウント</b>
@@ -332,9 +477,11 @@ printErrorMessages("color:red;font-weight:bold;");
     			<?php generateTR("915552706369961985", "7fJHwtRz_normal.jpg", "Tuno", "TunoTarosan"); ?>
     			<?php generateTR("", "_normal.jpg", "", ""); ?>
 			</table>
+			-->
+    			<!-- li><a href="./mock.php" target="_self"><span style="color: red;">NEW！</span>本番ページに向けてのモック画面！</a></li -->
+    			<!-- li><a href="./hometimeline.php" target="_self">マイタイムライン</a></li -->
+    			<!-- li><a href="./2d/2Droom.php" target="_self">二次絵絶対拡散するルーム</a></li -->
     	</div>
-		<br>
-		<p><a href="./auth/logout.php" target="_self">ログアウト</a></p>
 		</div>
 	</div>
 </body>

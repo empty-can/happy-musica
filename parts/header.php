@@ -7,3 +7,4 @@
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 	<link rel="stylesheet" type="text/css" href="<?php echo PageContext;?>/css/common.css?<?php echo date('Ymd-Hi'); ?>" />
+	<link rel="stylesheet" type="text/css" href="<?php echo PageContext;?>/css/animate.css" />

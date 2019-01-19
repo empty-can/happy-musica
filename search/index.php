@@ -32,14 +32,15 @@ $screen_name = getGetParam('screen_name', $screen_name);
 
 setSessionParam('screen_name', $screen_name);
 
-$param = array(
+$params = array(
     "q" => $search,
     "count" => $maxCount,
     "result_type" => "mixed"
 );
-setSessionParam('param', $param);
 
-$tweetList = new TweetList(PublicUserToken, PublicUserTokenSecret, $api, $param, $max_id, $count, 5);
+$accessToken = getSessionParam('access_token');
+$accessTokenSecret = getSessionParam('access_token_secret');
+$tweetList = new TweetList($accessToken, $accessTokenSecret, $api, $params, $max_id, $count, 5);
 
 
 $targetTweets = $tweetList->getTweet4View();

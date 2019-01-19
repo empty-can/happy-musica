@@ -21,13 +21,11 @@ $name = getGetParam('name', '');
 
 $screen_name = getGetParam('screen_name', "あなたのホーム");
 
-$param = array(
+$params = array(
     "count" => $maxCount
 );
 
-setSessionParam('param', $param);
-
-$tweetList = new TweetList(PublicUserToken, PublicUserTokenSecret, $api, $param, $max_id, $count, 5);
+$tweetList = new TweetList(PublicUserToken, PublicUserTokenSecret, $api, $params, $max_id, $count, 5);
 
 
 $targetTweets = $tweetList->getTweet4View();

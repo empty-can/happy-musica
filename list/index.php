@@ -8,28 +8,43 @@ if (getGetParam('reset', '') == 'true') {
     $id_hisoty = getSessionParam('id_hisoty', array());
 }
 
-$api = 'lists/statuses';
-setSessionParam('api', $api);
-
-$search="";
+$accessToken = getSessionParam('access_token');
+$accessTokenSecret = getSessionParam('access_token_secret');
 
 $listId = getGetParam('list_id', '');
 $max_id = getGetParam('max_id', '0');
 $count = getGetParam('count', 50);
 $maxCount = 200;
 
+$api = 'lists/members';
+$params = array(
+    "list_id" => $listId,
+    "count" => 5000
+);
+$memberList = getTweetObjects($accessToken, $accessTokenSecret, $api, $params);
+
+$members = array();
+foreach($memberList->users as $member) {
+    $members[$member->screen_name] = true;
+}
+
+setSessionParam('list_'.$listId, $members);
+//myVarDump($memberList->users);
+
+$api = 'lists/statuses';
+
+$search="";
+
 $name = getGetParam('name', '');
 
 $screen_name = getGetParam('screen_name', "あなたのリスト");
 
-$param = array(
+$params = array(
     "list_id" => $listId,
     "count" => $maxCount
 );
 
-setSessionParam('param', $param);
-
-$tweetList = new TweetList(PublicUserToken, PublicUserTokenSecret, $api, $param, $max_id, $count, 5);
+$tweetList = new TweetList($accessToken, $accessTokenSecret, $api, $params, $max_id, $count, 5);
 
 
 $targetTweets = $tweetList->getTweet4View();
@@ -55,7 +70,7 @@ if($end == 0 || ($end==$max_id)){
 $id_hisoty[$screen_name . ':' . $end] = $start;
 setSessionParam('id_hisoty', $id_hisoty);
 
-//$user = getTweetObjects(PublicUserToken, PublicUserTokenSecret, "users/show", $param);
+//$user = getTweetObjects(PublicUserToken, PublicUserTokenSecret, "users/show", $params);
 //$profile_image_url_https = $user->profile_image_url_https;
 //$user_name = $user->name;
 

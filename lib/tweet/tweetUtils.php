@@ -15,6 +15,9 @@ function obj2tweet($oObj)
         $result = (array)$targetObj;
     } else {
         foreach ($targetObj as $tweetObj) {
+        	if(!isset($tweetObj->entities))
+        		continue;
+        
             array_push($result, new Tweet($tweetObj));
         }
     }
@@ -29,6 +32,9 @@ function getTweetList($oObj, $lastTweetId)
 
     if (isset($oObj)) {
         foreach ($oObj as $tweetObj) {
+        	if(!isset($tweetObj->entities))
+        		continue;
+            
             $tweet = new Tweet($tweetObj);
 
             // if("1014558465832828928"==$tweet->getId()) {

@@ -68,6 +68,14 @@ class Tweet
     }
 
     /**
+     * ユーザー情報を設定する
+     */
+    public function setUser($user) {
+        $this->tweet->user = $user;
+    }
+    
+
+    /**
      * ********************************************************
      *
      * メディア情報を返す
@@ -94,6 +102,11 @@ class Tweet
         }
 
         // myVarDump($result);
+    }
+    
+    public function hasMediaEntity() {
+      $targetTweet = (isset($this->tweet->retweeted_status)) ? $this->tweet->retweeted_status : $this->tweet;
+      return (isset($targetTweet->extended_entities));
     }
 
     /**
@@ -314,10 +327,13 @@ class Tweet
             }
         }
 
-
+        // myVarDump($tweet);
         $this->URLs = array();
         $this->URLs += $this->getUrls($tweet->entities);
-        $this->URLs += $this->getUserUrls($tweet->user->entities);
+        
+        if(isset($tweet->user) && isset($tweet->user->entities))
+          $this->URLs += $this->getUserUrls($tweet->user->entities);
+        
         $this->isRetweet = isset($tweet->retweeted_status);
         
         if($this->isRetweet) {

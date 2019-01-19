@@ -1,0 +1,6 @@
+.settings
+.vscode
+/public/auth.php
+/lib/accessKeys.php
+/2d/token.json
+/auth/api_keys.php

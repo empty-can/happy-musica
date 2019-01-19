@@ -54,33 +54,36 @@ class TweetList
         }
 
         while (true) {
-//             myVarDump($twitterAPIParam);
+            // myVarDump($twitterAPIParam);
             $tmp = obj2tweet(getTweetObjects($userToken, $userTokenSecret, $twitterAPI, $twitterAPIParam));
 
-            if(isset($tmp['error'])) {
+            if (isset($tmp['error'])) {
                 setRequestParam('errorMessages', $tmp['error']);
                 break;
+            } else if (! is_array($tmp)) {
+                break;
             }
+
             $tweets = array_merge($tweets, $tmp);
             $this->calledNum = ((int) $this->calledNum) + 1;
 
-//             myVarDump($tweets);
+            // myVarDump($tweets);
 
- 			if(count($tweets)<=0) {
- 				break;
- 			}
+            if (count($tweets) <= 0) {
+                break;
+            }
 
- 			foreach ($tweets as $tweet) {
-//  			    print_r($tweet);
-//  			    if($tweet->isReplyToSelf())
-//  			        $tweets = array_merge($tweets, $tmp->getReplyTweet());
+            foreach ($tweets as $tweet) {
+                // print_r($tweet);
+                // if($tweet->isReplyToSelf())
+                // $tweets = array_merge($tweets, $tmp->getReplyTweet());
 
- 			    $id = $tweet->getId();
+                $id = $tweet->getId();
 
- 			    if ($this->startTweetId == 0)
- 			        $this->startTweetId = $id;
+                if ($this->startTweetId == 0)
+                    $this->startTweetId = $id;
 
- 			    $this->endTweetId = $tweet->getId();
+                $this->endTweetId = $tweet->getId();
 
                 $originalTweet = $tweet->getOriginalTweet();
 
@@ -100,28 +103,32 @@ class TweetList
 
                 $counter = ((int) $counter) + 1;
 
+                if(!$originalTweet->hasMediaEntity())
+                  continue;
+                
                 array_push($this->tweets4view, $originalTweet);
 
                 // 重複ツイートを排除するための記録
                 $index['ID:' . $id] = 'true';
                 $index['ID:' . $tweet->getId()] = 'true';
-
             }
 
-            if($counter >= $count) break;
-            else if(($this->calledNum >= $maxCall) && ($counter > 0)) break;
-            else if($this->calledNum >= 10) break;
+            if ($counter >= $count)
+                break;
+            else if (($this->calledNum >= $maxCall) && ($counter > 0))
+                break;
+            else if ($this->calledNum >= 10)
+                break;
 
-		    $twitterAPIParam['max_id'] = $this->endTweetId;
+            $twitterAPIParam['max_id'] = $this->endTweetId;
         }
-		// exit();
+        // exit();
 
-        if(count($this->tweets4view)>0) {
-            if ($index['ID:' .end($this->tweets4view)->getId()]=='true')
- 			    array_pop($this->tweets4view);
-
-		} else {
-// 			$this->endTweetId = 0;
-		}
+        if (count($this->tweets4view) > 0) {
+            if ($index['ID:' . end($this->tweets4view)->getId()] == 'true')
+                array_pop($this->tweets4view);
+        } else {
+            // $this->endTweetId = 0;
+        }
     }
 }

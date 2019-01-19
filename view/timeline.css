@@ -22,8 +22,14 @@
 }
 
 #dummy {
-    width: 100%;
-	height: 20vh;
+	color: black;
+	background-color: azure;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	padding: 0px;
+	margin: 0px;
+	z-index: 500;
 }
 
 #bottom {
@@ -75,15 +81,21 @@ video {
 .info .tweet_body {
 	color: white;
 
-	width: calc(100% - 56px);
-	max-height: calc(56px + 1vh);
+	width: calc(100% - 56px - 3.0em);
 	margin-left: 8px;
-}
-
-.info .tweet_body .message {
+	margin-right: 1.0em;
 	white-space: nowrap;
 	overflow-x: auto;
 	overflow-y: hidden;
+}
+
+.info_wrapper .info .tweet_body {
+	max-height: calc(56px + 1vh);
+}
+
+.message {
+	margin-right:2px;
+	overflow: hidden;
 }
 
 .info .tweet_body .user_info {
@@ -104,6 +116,18 @@ video {
 .info .user {
 	width: 56px;
 	overflow: hidden;
+}
+
+.info .toggle {
+	color:black;
+	background-color:lightgray;
+	width: 2.0em;
+	height: 1.75em;
+	font-size:1.75em;
+	margin-top: 0.25em;
+	text-align: center;
+	vertical-align: middle;
+	border-radius: 25%;
 }
 
 .info .user img {
@@ -333,6 +357,10 @@ video {
 	border-radius: 3px;
 }
 
+#toTop {
+	color: white;
+}
+
 .button img{
 	width: 100%;
 	height: 100%;
@@ -385,4 +413,15 @@ body{
 
 #tweet_button {
 	display: none;
+}
+
+.star {
+	color:gold;
+	position:absolute;
+	top:-0.3em;
+	left:-0.1em;
+	z-index:100;
+	font-size:2em;
+	text-shadow: 2px 2px 5px white;
+	-webkit-text-stroke: 1px gray;
 }

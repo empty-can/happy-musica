@@ -317,6 +317,10 @@
 	top:0px;
 }
 
+#toTop {
+	color: white;
+}
+
 h1 {
 	width: 100%;
     font-size: large;

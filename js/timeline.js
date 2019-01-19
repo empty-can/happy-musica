@@ -1,17 +1,16 @@
-var screen_name = '';
-var max_id = 0;
-var count = 0;
-var api = '';
 var showRT = true;
 
 function switchShowTweet() {
 	if(showRT) {
 		hideReTweet();
 		showRT = false;
+		$("#toggleRetweet").css("opacity", "0.5")
 	} else {
 		showReTweet();
 		showRT = true;
+		$("#toggleRetweet").css("opacity", "1.0")
 	}
+	
 }
 
 function showReTweet() {
@@ -77,7 +76,7 @@ var visiblePopup = function(targetId) {
 	tweetInfo.id = 'info_wrapper_hidden';
 	tweetInfo.style.display = 'block';
 	tweetInfo.style.height = 'auto';
-//	tweetInfo.style.paddingBottom = '25vh';
+//	tweetInfo.style.marginBottom = '25vh';
 
 	var tweet_body = tweetInfo.firstElementChild.lastElementChild.firstElementChild;
 //	tweet_body.style.overflow = 'hidden'
@@ -313,15 +312,19 @@ var wait = false;
 function callAjax() {
 	if(wait==true)
 		return;
+	
+	if(count<0)
+		return;
 
 	bottom.style.fontSize = '5em';
 	bottom.innerHTML = '&#x1F504;';
 
 	wait = true;
     $.ajax({
-        url : "/osaisen/timeline/ajax.php?count="+count+"&max_id="+max_id,
+        url : "/osaisen/timeline/ajax.php?count="+count+"&max_id="+max_id+"&api="+api,
         type : "POST",
         dataType:"json",
+        data : {'params' : params},
         error : function(XMLHttpRequest, textStatus, errorThrown) {
             console.log("ajax通信に失敗しました");
             console.log(XMLHttpRequest);
@@ -358,13 +361,133 @@ function callAjax() {
     });
 }
 
+function popListMenu(screenName) {
+	if(Object.keys(myLists).length==0)
+		return false;
+
+	var innerHTML = '<form id="addFollowee" name="addFollowee" method="post" action="javascript:void(0);" enctype="application/json"';
+
+	innerHTML += ' onsubmit="callDummyAjax('+"'addFollowee'"+', '+"'/osaisen/list/ajax.php'"+');">';
 
 
+	myLists.forEach(function( list ) {
+		for(key in list){
+			innerHTML	+= '<input type="checkbox" name="listId[]" value="'+key+'" />'+list[key]+'<br/>\r\n';
+//			console.log(key);
+//			console.log(list[key]);
+		}
+	});
+
+	innerHTML += '	<br />';
+	innerHTML += '	<input type="hidden" name="screen_name" value="'+screenName+'" />';
+	innerHTML += '	<div style="position:fixed; bottom:0; background-color:azure;">';
+	innerHTML += '	<button type="submit" name="submit">　'+screenName+'さんを選択したリストに追加　</button>';
+	innerHTML += '	<br />';
+	innerHTML += '	<br />';
+	innerHTML += '	<button type="button" name="reset" onclick="clearDummy()">　キャンセル　</button>';
+	innerHTML += '	<br />';
+	innerHTML += '	<br />';
+	innerHTML += '	</div>';
+	innerHTML += '</form>';
+
+	var element = document.createElement('div');
+	element.innerHTML = innerHTML;
+	element.style.padding = '1em';
+	element.style.paddingBottom = '20vh';
+	element.style.maxHeight = '50vh';
+	element.style.overflow = 'auto';
+	element.style.overflowStyle = 'scrollbar';
+
+	$("#dummy").append( element );
+//	document.getElementById("dummy").appendChild(element);
+}
+
+function callDummyAjax(formId, action) {
+	if(wait==true)
+		return;
+
+	wait = true;
+
+	var id = "#"+formId;
+	$form = $(id);
+
+	console.log('id'+$form.attr('id'));
+	console.log('method'+$form.attr('method'));
+	console.log('data'+$form.serialize());
+
+    $.ajax({
+        url : action,
+        type : $form.attr('method'),
+        dataType:"json",
+        data : $form.serialize(),
+        error : function(XMLHttpRequest, textStatus, errorThrown) {
+            console.log("ajax通信に失敗しました");
+            console.log(XMLHttpRequest);
+            console.log(textStatus);
+            console.log(errorThrown);
+			bottom.innerHTML = '';
+			clearDummy();
+        	wait = false;
+        },
+        success : function(response) {
+            console.log("ajax通信に成功しました");
+//            console.log(response[0]);
+            console.log(response['max_id']);
+//            $('#timeline').after('<p>'+response['max_id']+'</p>');
+//          console.log(response['timeline']);
+
+			clearDummy();
+        	wait = false;
+        }
+    });
+}
 
 
+function clearDummy() {
+	var element = document.getElementById("dummy");
+	while (element.firstChild) element.removeChild(element.firstChild);
+}
 
 
-
+function toggleInfo(id) {
+	var detailInfos = $("#info_wrapper_detail"+id);
+	
+	if(detailInfos.length==1) {
+		detailInfos.remove();
+		$("#info_wrapper"+id).css('visibility','visible');
+	} else {
+		var target = $("#info_wrapper"+id);
+		
+		var clone = target.clone();
+		
+		clone.attr('id', "info_wrapper_detail"+id);
+		clone.attr('class', "info_wrapper detail_info");
+		
+		var info = clone.find('.info');
+		var user = info.find('.user');
+		var tweetBody = $("#info_wrapper_hidden_"+id).find('.info').find('.tweet_body').clone();
+		var toggle = info.find('.toggle');
+		
+		tweetBody.css('white-space','normal');
+		tweetBody.css('overflow','visible');
+		tweetBody.css('max-height','100%');
+		tweetBody.find('.user_info').css('white-space','normal');
+		tweetBody.find('.user_info').css('overflow','visible');
+		tweetBody.find('.message').css('white-space','normal');
+		tweetBody.find('.message').css('overflow','visible');
+		
+		info.find('.tweet_body').replaceWith(tweetBody);
+		
+		toggle.css('visibility','visible').text('▲');
+		
+		clone.css('max-height','100%');
+		clone.css('margin-top','-56px');
+		
+		$("#"+id).append(clone);
+		
+		target.css('visibility','hidden');
+	}
+}
 
 
 

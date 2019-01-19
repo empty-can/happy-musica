@@ -19,3 +19,8 @@ function getTweetObjects($user_token, $user_token_secret, $api_url,  $param = ar
 //     myVarDump((new TwitterOAuth(Consumer_Key, Consumer_Secret, $user_token, $user_token_secret))->get("statuses/show", array("id" =>"1024161979122864128")));
   return (new TwitterOAuth(Consumer_Key, Consumer_Secret, $user_token, $user_token_secret))->get($api_url, $param);
 }
+
+function postData($user_token, $user_token_secret, $api_url,  $param = array()) {
+
+    return (new TwitterOAuth(Consumer_Key, Consumer_Secret, $user_token, $user_token_secret))->post($api_url, $param);
+}

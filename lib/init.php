@@ -16,10 +16,16 @@ require_once(dirname(__FILE__)."./twitteroauth/load.php"); // twitteroauthのラ
 require_once(dirname(__FILE__)."./util.php"); // ユーティリティライブラリをロード
 require_once(dirname(__FILE__)."./dao.php"); // データアクセスライブラリをロード
 require_once(dirname(__FILE__)."./tweet/Tweet.php"); // ユーティリティライブラリをロード
+require_once(dirname(__FILE__)."./tweet/CollectionsTweetList.php"); // ライブラリをロード
 require_once(dirname(__FILE__)."./tweet/TweetList.php"); // ライブラリをロード
 require_once(dirname(__FILE__)."./tweet/tweetUtils.php"); // ユーティリティライブラリをロード
 require_once(dirname(__FILE__)."./myTweetAPI.php"); // カスタムTwitterAPIライブラリをロード
 require_once(dirname(__FILE__)."./accessKeys.php"); // アクセスキーを取得
+require_once(dirname(__FILE__)."./Smarty/Smarty.class.php"); // Smartyライブラリをロード
+
+$smarty = new Smarty();
+$smarty->template_dir = 'templates/';
+$smarty->compile_dir  = 'templates/c/';
 
 
 // 各種定数の設定
@@ -27,6 +33,9 @@ require_once(dirname(__FILE__)."./accessKeys.php"); // アクセスキーを取�
 define("UserToken", "access_token");
 define("UserTokenSecret", "access_token_secret");
 define("TwitterConnection", "twitter_conn");
+
+$accessToken = getSessionParam('access_token');
+$accessTokenSecret = getSessionParam('access_token_secret');
 
 define("PageContext", "/osaisen");
 define("ErrorMessage", "error_message");
