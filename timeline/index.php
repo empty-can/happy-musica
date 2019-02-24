@@ -33,7 +33,7 @@ setSessionParam('screen_name', $screen_name);
 
 $params = array(
     "screen_name" => $screen_name,
-    "count" => $maxCount
+    "count" => $count
 );
 
 
@@ -41,12 +41,19 @@ $accessToken = getSessionParam('access_token');
 $accessTokenSecret = getSessionParam('access_token_secret');
 $tweetList = new TweetList($accessToken, $accessTokenSecret, $api, $params, $max_id, $count, 5);
 
-
-$targetTweets = $tweetList->getTweet4View();
+$targetTweets = array_chunk($tweetList->getTweet4View(), $count)[0];
+$calledNum = count($targetTweets);
 $tweet_num = count($targetTweets);
+$end = end($targetTweets)->getId();
+$start = reset($targetTweets)->getId();
+
+/**
+$targetTweets = $tweetList->getTweet4View();
 $calledNum = $tweetList->getCalledNum();
 $start = $tweetList->getStartTweetId();
 $end = $tweetList->getEndTweetId();
+$tweet_num = count($targetTweets);
+**/
 
 if(isset($id_hisoty[$screen_name.'screen_name:'.$max_id])){
     $backQueryString = 'screen_name='.$screen_name.'&count='.$count.'&max_id='.$id_hisoty[$screen_name.':'.$end];

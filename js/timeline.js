@@ -1,4 +1,5 @@
 var showRT = true;
+var tweetQueue = [];
 
 function switchShowTweet() {
 	if(showRT) {
@@ -42,7 +43,23 @@ setInterval( function() {
 //			bottom.style.textAlign = 'center';
 //			bottom.innerHTML = '画面の下まで来ました。';
 
-			callAjax();
+			if(tweetQueue.length<(count+10)) {
+				callAjax();
+			}
+			
+			var tweetQueueLength = tweetQueue.length;
+			for(var i=0; tweetQueue.length>0 && i<count; i++) {
+                $('#timeline').append(tweetQueue.shift());
+
+            	if(showRT) {
+            		showReTweet();
+            	} else {
+            		hideReTweet();
+            	}
+
+    			bottom.innerHTML = '';
+                console.log(tweetQueue.length);
+			}
 		}
 	}
 }, 1000 ) ;
@@ -335,10 +352,11 @@ function callAjax() {
         },
         success : function(response) {
             console.log("ajax通信に成功しました");
-//            console.log(response[0]);
+//            console.log(response);
             console.log(response['max_id']);
 //            $('#timeline').after('<p>'+response['max_id']+'</p>');
-//          console.log(response['timeline']);
+            console.log(response['timeline'].length);
+            
             max_id = response['max_id'];
 
             if(max_id<0) {
@@ -346,15 +364,12 @@ function callAjax() {
     			bottom.innerHTML = '最後まで来ました。';
             	wait = true;
             } else {
-                $('#timeline').append(response['timeline']);
-
-            	if(showRT) {
-            		showReTweet();
-            	} else {
-            		hideReTweet();
+            	
+            	var timeline = response['timeline'];
+            	var tweetNum = timeline.length;
+				for (var i = 0; i < tweetNum; i++) {
+              		tweetQueue.push(timeline[i]);
             	}
-
-    			bottom.innerHTML = '';
             	wait = false;
             }
         }

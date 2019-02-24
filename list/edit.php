@@ -9,16 +9,16 @@ $targets = getGetParam('targets', '');
 $count = getGetParam('count', '500');
 
 if(strcmp($type,'delete')==0) {
-	
+
 	$api = 'lists/members/destroy';
 	$max_id = 0;
-	
+
 	foreach($targets as $target) {
 		$params = array(
 		    "list_id" => $listId,
 		    "user_id" => $target
 		);
-		
+
 		$result = postData($accessToken, $accessTokenSecret, $api, $params, $max_id, $count, 5);
 	}
 }
@@ -30,6 +30,10 @@ $param = array(
     "list_id" => $listId,
     "count" => $count
 );
+
+var_dump(!empty($accessToken));
+var_dump(!empty($accessTokenSecret));
+var_dump($param);
 
 $members = getTweetObjects($accessToken, $accessTokenSecret, $api, $param);
 
@@ -58,15 +62,15 @@ if (isset($myLists->{'errors'})) {
 	<form method="get" action="/osaisen/list/edit.php">
 <?php
 if(isset($members->users)) {
-	
+
 	$members = json_decode(json_encode($members), true)['users'];
-	
+
 	function cmp_follower_num( $a , $b) {
 		return $a['followers_count'] < $b['followers_count']; //フォロワー数を比較
 	}
-	
+
 	usort( $members , "cmp_follower_num" );
-	
+
 	foreach ($members as $member) {
     ?>
         <input type="checkbox" name="targets[]" value="<?php echo $member['id']; ?>" /><img src="<?php echo $member['profile_image_url_https']; ?>" />
